@@ -6,14 +6,10 @@ services:
     - POSTGRES_PASSWORD=root
     - POSTGRES_DB=ny_taxi
     volumes:
-      -  "/C/Users/hp/data_engineering_bootcamp/week1_basics/docker/ny_taxi_postgres_data:/var/lib/postgresql/data:rw"
+      -  "/C/Users/hp/data_engineering_bootcamp/week1_basics/docker/ny_taxi_postgres_data:/var/lib/postgresql/data"
     ports:
       - "5432:5432"
-    healthcheck:
-      test: ["CMD", "pg_isready", "-U", "airflow"]
-      interval: 5s
-      retries: 5
-    restart: always
+    
 
   # no need to define --network tag in docker compose..it will auto create a network for both image since they are under the same service 
 

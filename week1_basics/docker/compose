@@ -1,0 +1,38 @@
+services:
+  postgres:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: airflow
+      POSTGRES_PASSWORD: airflow
+      POSTGRES_DB: airflow
+    volumes:
+      - postgres-db-volume:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "airflow"]
+      interval: 5s
+      retries: 5
+    restart: always
+
+
+  winpty docker run -it \
+  -e POSTGRES_USER="root" \
+  -e POSTGRES_PASSWORD="root" \
+  -e POSTGRES_DB="ny_taxi" \
+  -v /C/Users/hp/data_engineering_bootcamp/week1_basics/docker/ny_taxi_postgres_data:/var/lib/postgresql/data  \
+  -p 5432:5432 \
+  --network=pg-network \
+  --name pg-database1 \
+  postgres:13
+
+  winpty docker run -it \
+  -e PGADMIN_DEFAULT_EMAIL="admin@admin.com" \
+  -e PGADMIN_DEFAULT_PASSWORD="root" \
+  -v /C/Users/hp/data_engineering_bootcamp/week1_basics/docker/pgadmin_data:/var/lib/pgadmin \
+  -p 8080:80 \
+  --network=pg-network \
+  --name pgadmin-3 \
+  dpage/pgadmin4`
+
+  winpty docker run --name mypostgres1 -e POSTGRES_PASSWORD=test \
+   -v /C/Users/hp/data_engineering_bootcamp/week1_basics/docker/mypost_data:/var/lib/postgresql/data \
+   --network pg-network -p 5432:5432 -d iitdbgroup/cs425

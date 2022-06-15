@@ -36,3 +36,26 @@ services:
   winpty docker run --name mypostgres1 -e POSTGRES_PASSWORD=test \
    -v /C/Users/hp/data_engineering_bootcamp/week1_basics/docker/mypost_data:/var/lib/postgresql/data \
    --network pg-network -p 5432:5432 -d iitdbgroup/cs425
+
+URL="https://s3.amazonaws.com/nyc-tlc/misc/taxi+_zone_lookup.csv"
+python ingest_practise.py \
+    --user=root \
+    --password=root \
+    --host=127.0.0.1 \
+    --port=5432 \
+    --db=ny_taxi \
+    --table_name=lookup-zones \
+    --url=${URL} 
+
+docker run -it  \
+  --network=pg-network \
+  taxi_ingest:v1 \
+    --user=root \
+    --password=root \
+    --host=127.0.0.1 \
+    --port=5432 \
+    --db=ny_taxi \
+    --table_name=lookup-zones \
+    --url=${URL}
+
+   

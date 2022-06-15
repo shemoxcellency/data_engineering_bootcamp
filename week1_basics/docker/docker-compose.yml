@@ -6,7 +6,7 @@ services:
     - POSTGRES_PASSWORD=root
     - POSTGRES_DB=ny_taxi
     volumes:
-      -  "/C/Users/hp/data_engineering_bootcamp/week1_basics/docker/ny_taxi_postgres_data:/var/lib/postgresql/data"
+      - "postgres_volume:/var/lib/postgresql/data:rw"
     ports:
       - "5432:5432"
     
@@ -22,6 +22,8 @@ services:
       - "/C/Users/hp/data_engineering_bootcamp/week1_basics/docker/pgadmin_data:/var/lib/pgadmin"
     ports:
       - "8080:80"
+volumes:
+  postgres_volume:
 
 
 

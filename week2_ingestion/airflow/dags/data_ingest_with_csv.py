@@ -18,18 +18,18 @@ BUCKET = os.environ.get("GCP_GCS_BUCKET")
 dataset_file = "yellow_tripdata_2021-02.parquet"
 dataset_url = f"https://d37ci6vzurychx.cloudfront.net/trip-data/{dataset_file}"
 path_to_local_home = os.environ.get("AIRFLOW_HOME", "/opt/airflow/")
-# csv_file = dataset_file.replace('.parquet', '.csv')
+csv_file = dataset_file.replace('.parquet', '.csv')
 BIGQUERY_DATASET = os.environ.get("BIGQUERY_DATASET", 'trips_data_all')
 
 
 
-# def format_to_csv(src_file):
-#     if not src_file.endswith('.parquet'):
-#         logging.error("Can only accept source files in parquet format, for the moment")
-#         return
+def format_to_csv(src_file):
+    if not src_file.endswith('.parquet'):
+        logging.error("Can only accept source files in parquet format, for the moment")
+        return
 
-#     table = pq.read_table(src_file)
-#     pq.write_table(table, src_file.replace('.parquet', '.csv'))
+    table = pq.read_table(src_file)
+    pq.write_table(table, src_file.replace('.parquet', '.csv'))
 
 
 # NOTE: takes 20 mins, at an upload speed of 800kbps. Faster if your internet has a better upload speed
@@ -63,12 +63,12 @@ default_args = {
 
 # NOTE: DAG declaration - using a Context Manager (an implicit way)
 with DAG(
-    dag_id="data_adjusted",
+    dag_id="data_ingest_csv",
     schedule_interval="@daily",
     default_args=default_args,
     catchup=False,
     max_active_runs=1,
-    tags=['datacamp'],
+    tags=['datacamp2'],
 ) as dag:
 
     download_dataset_task = BashOperator(
@@ -76,13 +76,13 @@ with DAG(
         bash_command=f"curl -sSL {dataset_url} > {path_to_local_home}/{dataset_file}"
     )
 
-    # format_to_parquet_task = PythonOperator(
-    #     task_id="format_to_csv_task",
-    #     python_callable=format_to_csv,
-    #     op_kwargs={
-    #         "src_file": f"{path_to_local_home}/{dataset_file}",
-    #     },
-    # )
+    format_to_parquet_task = PythonOperator(
+        task_id="format_to_csv_task",
+        python_callable=format_to_csv,
+        op_kwargs={
+            "src_file": f"{path_to_local_home}/{dataset_file}",
+        },
+    )
 
     # TODO: Homework - research and try XCOM to communicate output values between 2 tasks/operators
     local_to_gcs_task = PythonOperator(
@@ -90,8 +90,8 @@ with DAG(
         python_callable=upload_to_gcs,
         op_kwargs={
             "bucket": BUCKET,
-            "object_name": f"raw/{dataset_file}",
-            "local_file": f"{path_to_local_home}/{dataset_file}",
+            "object_name": f"raw/{csv_file}",
+            "local_file": f"{path_to_local_home}/{csv_file}",
         },
     )
 
@@ -101,15 +101,15 @@ with DAG(
             "tableReference": {
                 "projectId": PROJECT_ID,
                 "datasetId": BIGQUERY_DATASET,
-                "tableId": "external_table",
+                "tableId": "external_table2",
             },
             "externalDataConfiguration": {
                 "sourceFormat": "PARQUET",
-                "sourceUris": [f"gs://{BUCKET}/raw/{dataset_file}"],
+                "sourceUris": [f"gs://{BUCKET}/raw/{csv_file}"],
             },
         },
     )
 
-    # download_dataset_task >> format_to_parquet_task >> local_to_gcs_task >> bigquery_external_table_task
+download_dataset_task >> format_to_parquet_task >> local_to_gcs_task >> bigquery_external_table_task
 
-download_dataset_task >> local_to_gcs_task >> bigquery_external_table_task
+# download_dataset_task >> local_to_gcs_task >> bigquery_external_table_task

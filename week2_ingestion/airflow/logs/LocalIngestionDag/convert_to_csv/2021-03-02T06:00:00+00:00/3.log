@@ -1,0 +1,25 @@
+[2022-07-07 19:06:59,153] {taskinstance.py:1032} INFO - Dependencies all met for <TaskInstance: LocalIngestionDag.convert_to_csv scheduled__2021-03-02T06:00:00+00:00 [queued]>
+[2022-07-07 19:06:59,164] {taskinstance.py:1032} INFO - Dependencies all met for <TaskInstance: LocalIngestionDag.convert_to_csv scheduled__2021-03-02T06:00:00+00:00 [queued]>
+[2022-07-07 19:06:59,164] {taskinstance.py:1238} INFO - 
+--------------------------------------------------------------------------------
+[2022-07-07 19:06:59,165] {taskinstance.py:1239} INFO - Starting attempt 3 of 3
+[2022-07-07 19:06:59,165] {taskinstance.py:1240} INFO - 
+--------------------------------------------------------------------------------
+[2022-07-07 19:06:59,176] {taskinstance.py:1259} INFO - Executing <Task(PythonOperator): convert_to_csv> on 2021-03-02 06:00:00+00:00
+[2022-07-07 19:06:59,183] {standard_task_runner.py:52} INFO - Started process 4212 to run task
+[2022-07-07 19:06:59,188] {standard_task_runner.py:76} INFO - Running: ['***', 'tasks', 'run', 'LocalIngestionDag', 'convert_to_csv', 'scheduled__2021-03-02T06:00:00+00:00', '--job-id', '202', '--raw', '--subdir', 'DAGS_FOLDER/data_ingestion_local.py', '--cfg-path', '/tmp/tmpxmsk7pdo', '--error-file', '/tmp/tmp3v_qcxgk']
+[2022-07-07 19:06:59,189] {standard_task_runner.py:77} INFO - Job 202: Subtask convert_to_csv
+[2022-07-07 19:06:59,257] {logging_mixin.py:109} INFO - Running <TaskInstance: LocalIngestionDag.convert_to_csv scheduled__2021-03-02T06:00:00+00:00 [running]> on host d7995de6702f
+[2022-07-07 19:06:59,302] {warnings.py:110} WARNING - /home/***/.local/lib/python3.7/site-packages/***/utils/context.py:152: AirflowContextDeprecationWarning: Accessing 'execution_date' from the template is deprecated and will be removed in a future version. Please use 'data_interval_start' or 'logical_date' instead.
+  warnings.warn(_create_deprecation_warning(key, self._deprecation_replacements[key]))
+
+[2022-07-07 19:06:59,322] {taskinstance.py:1426} INFO - Exporting the following env vars:
+AIRFLOW_CTX_DAG_OWNER=***
+AIRFLOW_CTX_DAG_ID=LocalIngestionDag
+AIRFLOW_CTX_TASK_ID=convert_to_csv
+AIRFLOW_CTX_EXECUTION_DATE=2021-03-02T06:00:00+00:00
+AIRFLOW_CTX_DAG_RUN_ID=scheduled__2021-03-02T06:00:00+00:00
+[2022-07-07 19:06:59,971] {python.py:175} INFO - Done. Returned value was: None
+[2022-07-07 19:06:59,987] {taskinstance.py:1277} INFO - Marking task as SUCCESS. dag_id=LocalIngestionDag, task_id=convert_to_csv, execution_date=20210302T060000, start_date=20220707T190659, end_date=20220707T190659
+[2022-07-07 19:07:00,082] {local_task_job.py:154} INFO - Task exited with return code 0
+[2022-07-07 19:07:00,126] {local_task_job.py:264} INFO - 1 downstream tasks scheduled from follow-on schedule check

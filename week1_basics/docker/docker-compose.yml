@@ -9,6 +9,9 @@ services:
       - "postgres_volume:/var/lib/postgresql/data:rw"
     ports:
       - "5432:5432"
+    networks:
+      - airflow
+
     
 
   # no need to define --network tag in docker compose..it will auto create a network for both image since they are under the same service 
@@ -19,11 +22,20 @@ services:
       - PGADMIN_DEFAULT_EMAIL=admin@admin.com
       - PGADMIN_DEFAULT_PASSWORD=root
     volumes:
-      - "/C/Users/hp/data_engineering_bootcamp/week1_basics/docker/pgadmin_data:/var/lib/pgadmin"
+      - "pgadmin_volume:/var/lib/pgadmin"
     ports:
-      - "8080:80"
+      - "8090:80"
+    networks:
+      - airflow
 volumes:
   postgres_volume:
+  pgadmin_volume:
+
+
+networks:
+  airflow:
+    external:
+      name: airflow_default
 
 
 

@@ -1,0 +1,12 @@
+
+Getting common columns:
+common_columns = []
+yellow_columns = set(df_yellow.columns)
+for col in df_green.columns:
+    if col in yellow_columns:
+        common_columns.append(col)
+
+common_columns.
+
+#if you want to have just one parquet file..the opposite of repartition is using the coalesce function
+df_result.coalesce(1).write.parquet('data/report/revenue/', mode = 'overwrite')
